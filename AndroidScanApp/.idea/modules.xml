@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Desktop/Code/zone/Scan Engine Assesment Software/AndroidScanApp/BarcodeTestApp.iml" filepath="$USER_HOME$/Desktop/Code/zone/Scan Engine Assesment Software/AndroidScanApp/BarcodeTestApp.iml" />
-      <module fileurl="file://$USER_HOME$/Desktop/Code/zone/Scan Engine Assesment Software/AndroidScanApp/app/app.iml" filepath="$USER_HOME$/Desktop/Code/zone/Scan Engine Assesment Software/AndroidScanApp/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidScanApp.iml" filepath="$PROJECT_DIR$/AndroidScanApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SharedScan/SharedScan.iml" filepath="$PROJECT_DIR$/SharedScan/SharedScan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>

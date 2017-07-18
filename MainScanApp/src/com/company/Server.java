@@ -1,85 +1,73 @@
 package com.company;
 
-import java.io.*;
+//import scan.Barcode;
+//import scan_classes;
+
+//import com.company.Barcode;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+
+
+
 public class Server implements Runnable{
+
+
+    Thread serverThread = null;
 
     //Server variables
     private static ServerSocket server;
-    private static Socket connection;
+    private static Socket socket;
     private static int port = 5000;
 
     //Stream variables
-    private static InputStreamReader inputStreamReader;
-    private static OutputStreamWriter outputStreamWriter;
-    private static PrintWriter printWriter;
-    private static BufferedReader bufferedReader;
-    private static BufferedWriter bufferedWriter;
-
-    //testing string
-    private static String message;
-
-    /**
-     * Create input stream
-     * @throws IOException
-     */
-    private static void stream() throws IOException {
-        //printWriter = new PrintWriter(connection.getOutputStream());
-        outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
-        bufferedWriter = new BufferedWriter(outputStreamWriter);
-
-        inputStreamReader = new InputStreamReader(connection.getInputStream());
-        bufferedReader = new BufferedReader(inputStreamReader);
-
-        message = bufferedReader.readLine();
-        System.out.println(message);
-
-        bufferedWriter.flush();
-    }
-
-    /**
-     * close stream and connection
-     * @throws IOException
-     */
-    private static void close() throws IOException {
-        inputStreamReader.close();
-        outputStreamWriter.close();
-        //printWriter.close();
-        bufferedReader.close();
-        bufferedWriter.close();
-        server.close();
-        connection.close();
-    }
-
-    /**
-     * send commands
-     */
-    private void sendCommand(String cmd) throws IOException {
-        bufferedWriter.write(cmd);
-        System.out.println("Message sent " + cmd);
-    }
+    private ObjectInputStream inputStream = null;
+    private ObjectOutputStream outputStream = null;
 
     @Override
     public void run() {
-        while (true) {
-            try {
-                server = new ServerSocket(port);
-                connection = server.accept();
+        try {
+            server = new ServerSocket(port);
+            System.out.println("Server created");
 
-                stream();
-                sendCommand("hello");
+            socket = server.accept();
+            System.out.println("Socket connected");
 
-                System.out.println(message);
-                close();
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            inputStream = new ObjectInputStream(socket.getInputStream());
+            System.out.println("Streams created");
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            do {
+                System.out.println("Reading input data");
+                String barcode = null;
+                Object temp = inputStream.readObject();
+                System.out.println("Object received");
+                if (temp instanceof String) {
+                    barcode = (String) temp;
+                    System.out.println("temp is barcode");
+                    System.out.println(temp);
+                }
+            } while (inputStream.available() != 0);
+
+            socket.close();
+
+        } catch (IOException e) {
+            //e.printStackTrace();
+                System.out.println("IO Exception");
+        } catch (ClassNotFoundException e) {
+            //e.printStackTrace();
+            System.out.println("Class not found exception");
+        }
+    }
+
+    public void start() {
+        if(serverThread == null) {
+            serverThread = new Thread(this, "Server Thread");
+            serverThread.start();
         }
     }
 }
-
-//(new Thread(new Server())).start();
-

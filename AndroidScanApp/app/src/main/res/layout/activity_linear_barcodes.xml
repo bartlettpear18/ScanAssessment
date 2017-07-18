@@ -7,35 +7,25 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.bartlettpear18gmail.barcodetestapp.MainActivity" >
+    tools:context="com.bartlettpear18gmail.barcodetestapp.LinearBarcodes">
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="barcode"
-        android:text="Go to barcodes"
-        android:id="@+id/button"
+        android:text="Next Barcode"
+        android:id="@+id/barcode"
+        android:onClick="nextBarcode"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="21dp" />
+        android:layout_marginBottom="33dp" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView2"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/configuration"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test TCP"
-        android:id="@+id/tcp"
-        android:onClick="testConnection"
-        android:layout_above="@+id/button"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
