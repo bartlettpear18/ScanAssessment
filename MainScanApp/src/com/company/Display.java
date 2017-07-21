@@ -1,70 +1,50 @@
-package com.company;/**
- * Created by Joel.Bartlett18 on 6/29/2017.
- */
+package com.company;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Display extends Application {
 
+    private Text text;
+    private String ip_address;
+    private String output = "";
+
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Scan Engine Diagnostic");
+    public void start(Stage primaryStage) throws UnknownHostException {
 
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
-
-        //Start Button
-        Button btn = new Button();
-        btn.setText("Run Test");
-        btn.getStyleClass().add("button");
-
-        btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                btn.setStyle("-fx-background-color: #EF4136; -fx-text-fill: #FFFFFF;");
+        ip_address = String.valueOf(InetAddress.getLocalHost());
+        for (int i= 0; i < ip_address.length(); i++) {
+            if(Character.isDigit(ip_address.charAt(i)) || Character.toString(ip_address.charAt(i)).equals(".")) {
+                output += ip_address.charAt(i);
             }
-        });
-        btn.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                btn.setStyle("-fx-background-color:transparent;");
-            }
-        });
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        }
 
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Running Test");
-            }
-        });
+        //Create Window
+        primaryStage.setTitle("Scan Diagnostic");
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
 
-        //Model Name Input
-        TextField textField = new TextField();
-        grid.add(textField,1,1);
+        text = new Text();
+        text.setFont(Font.font("Monospace",30));
+        text.setStyle("-fx-stroke: #EF4136");
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setText("Host IP address: " + output);
 
-        grid.add(btn,1,2);
-        StackPane root = new StackPane();
-        //root.getChildren().add(btn);
+        StackPane layout = new StackPane();
+        layout.setStyle("-fx-background-color: #1D1E18;");
+        layout.getChildren().add(text);
+        Scene scene = new Scene(layout, 600, 150);
 
-        Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
-
-        scene.getStylesheets().clear();
-        scene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryStage.show();
+
     }
 }

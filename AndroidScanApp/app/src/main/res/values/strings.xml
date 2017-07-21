@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">BarcodeTestApp</string>
+    <string name="app_name">Scan Engine Diagnostic Test</string>
+    <string name="set_ip">---</string>
+    <string name="complete">Scans Completed: </string>
+    <string name="failed">Scans Failed: </string>
+    <string name="current">Current Symbology: </string>
+    <string name="status">Scans Status: </string>
 </resources>
