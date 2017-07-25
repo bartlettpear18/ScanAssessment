@@ -4,19 +4,27 @@ package com.company;
  */
 
 import javafx.application.Application;
+import java.io.IOException;
 
-import java.io.FileNotFoundException;
 
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    static Mediator med;
+    public static void main(String[] args) throws IOException {
 
-        //Application.launch(Display.class,args);
-
-        Server server = new Server();
-        server.start();
+        med = new Mediator();
 
 
+
+        AndroidServer androidServer = new AndroidServer();
+        androidServer.start("Android Thread");
+
+        DriverServer driverServer = new DriverServer();
+        driverServer.start("Driver Thread");
+
+//        Application.launch(Display.class,args);
 
     }
+
+    public static Mediator getMed() { return med; }
 }

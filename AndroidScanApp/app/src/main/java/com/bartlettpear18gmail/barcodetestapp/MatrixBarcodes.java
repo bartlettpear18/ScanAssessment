@@ -36,7 +36,7 @@ public class MatrixBarcodes extends AppCompatActivity {
             image = (ImageView) findViewById(R.id.imageView2);
             currentSym = (TextView) findViewById(R.id.currentSym);
             scanStatus = (TextView) findViewById(R.id.scanStatus);
-            getClient().sendDecode(gen.getDecodeData());
+            getClient().sendCode(gen.getDecodeData());
 
 
         } catch (WriterException e) {

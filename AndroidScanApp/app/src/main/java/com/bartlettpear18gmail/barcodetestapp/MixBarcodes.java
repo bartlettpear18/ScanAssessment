@@ -1,7 +1,6 @@
 package com.bartlettpear18gmail.barcodetestapp;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.zxing.WriterException;
-
-import java.util.ArrayList;
 
 import static com.bartlettpear18gmail.barcodetestapp.MainActivity.getClient;
 
@@ -39,7 +36,7 @@ public class MixBarcodes extends AppCompatActivity {
             image = (ImageView) findViewById(R.id.imageView2);
             currentSym = (TextView) findViewById(R.id.currentSym);
             scanStatus = (TextView) findViewById(R.id.scanStatus);
-            getClient().sendDecode(gen.getDecodeData());
+            getClient().sendCode(gen.getDecodeData());
 
 
         } catch (WriterException e) {

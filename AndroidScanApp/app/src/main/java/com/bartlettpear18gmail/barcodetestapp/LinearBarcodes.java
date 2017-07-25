@@ -9,13 +9,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
-import java.util.ArrayList;
-
 import static com.bartlettpear18gmail.barcodetestapp.MainActivity.getClient;
-
+import static com.bartlettpear18gmail.barcodetestapp.Client.scanned;
 
 public class LinearBarcodes extends AppCompatActivity {
 
@@ -41,33 +38,78 @@ public class LinearBarcodes extends AppCompatActivity {
             currentSym = (TextView) findViewById(R.id.currentSym);
             scanStatus = (TextView) findViewById(R.id.scanStatus);
 
-            getClient().sendDecode(gen.getDecodeData());
-
         } catch (WriterException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-
         }
 
     }
 
     public void start(View view) throws WriterException, InterruptedException {
 
+        //Tell Main the expected decode data
+//        getClient().sendCode(gen.getDecodeData());
+
+        String sym;
+        String status = "Scanning...";
+        scanStatus.setText(status);
+
+        /*
+        for(Bitmap map : gen.getOneDMaps()) {
+            //Change image
+            image.setImageBitmap(map);
+            Log.d(tag, "Image set");
+
+            //Update Current Symbology text field
+            sym = "Current Symbology: " + gen.getFormats().get(formatCounter);
+            currentSym.setText(sym);
+            formatCounter++;
+
+            //Tell main barcode is displayed
+            getClient().sendReady();
+            Log.d(tag, "Ready sent to Main. Waiting now.");
+
+            //Wait for scan to complete
+            while(!scanned) { }
+
+            Log.d(tag, "Finished waiting");
+            //Update Status after scan
+            scanStatus.setText("Scan Complete");
+            wait(500);
+            Log.d(tag, "Scan complete");
+        }
+        */
+        /*
         if (i < gen.getOneDMaps().size()-1) {
-            image = (ImageView) findViewById(R.id.imageView2);
             image.setImageBitmap(gen.getOneDMaps().get(i));
+
+            sym = "Current Symbology: " + gen.getFormats().get(i);
+            currentSym.setText(sym);
+
+            //Tell main barcode is displayed
             getClient().sendReady();
 
-            String sym = "Current Symbology: " + gen.getFormats().get(i);
-            currentSym.setText(sym);
-            scanStatus.setText("Scanning...");
-            i++;
+            //Wait for scan to complete
+            while(!scanned) { }
 
-        } else {
-            Intent intent = new Intent(this, Results.class);
-            startActivity(intent);
-            getClient().sendDone();
+            //Update Status after scan
+            scanStatus.setText("Scan Complete");
+            wait(500);
+            Log.d(tag, "Scan complete");
+            i++;
         }
+
+
+        //Move on to Results Activity after finishing test
+        Intent intent = new Intent(this, Results.class);
+        startActivity(intent);
+        */
+        getClient().sendReady();
+
+        while(!scanned) { }
+
+        Log.d(tag, "Finished waiting");
+        //Update Status after scan
+        scanStatus.setText("Scan Complete");
 
     }
 

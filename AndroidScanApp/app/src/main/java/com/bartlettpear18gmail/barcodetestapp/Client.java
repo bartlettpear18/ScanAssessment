@@ -8,6 +8,7 @@ import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +26,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
     //Server variables
     private static Socket socket;
     private static int port = 5000;
-    public static String ip = "10.0.0.162";
+    public static String ip = "10.0.0.162"; //192.168.43.81";
 
     //Stream variables
     private ObjectInputStream inputStream = null;
@@ -35,13 +36,17 @@ public class Client extends AsyncTask<Void, Void, Void> {
     private String ready = new String("Ready");
     private String done = new String("Done");
     private String csv = new String("CSV");
-    private Integer decodeData = new Integer(0);
+    private String decodeData = new String("");
 
     //Booleans
     private boolean isReady = false;
     private boolean isDone = false;
-    private boolean decode = false;
+    private boolean code = false;
     private boolean toCSV = false;
+    public static boolean scanned = false;
+
+    //Results
+    public static ArrayList<String> results = new ArrayList<>();
 
     public Client() {}
 
@@ -70,11 +75,11 @@ public class Client extends AsyncTask<Void, Void, Void> {
     public void sendCSV() throws InterruptedIOException {
         toCSV = !toCSV;
     }
-    public void sendDecode(int data) throws InterruptedException {
-        decode = !decode;
-        decodeData = data;
+    public void sendCode(int data) throws InterruptedException {
+        code = !code;
+        decodeData = data + "";
         Log.d(tag, String.valueOf(decodeData));
-        decode = !decode;
+        code = !code;
     }
 
 
@@ -101,12 +106,19 @@ public class Client extends AsyncTask<Void, Void, Void> {
         socket = new Socket(ip, port);
         Log.d(tag, "Created socket");
     }
+
     private void streams() throws IOException {
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
         Log.d(tag, "Streams created");
 
     }
+
+    private String receiving() throws IOException, ClassNotFoundException, InterruptedException {
+        String temp = (String) inputStream.readObject();
+        return temp;
+    }
+
     public void close() throws IOException {
         outputStream.flush();
         outputStream.close();
@@ -119,15 +131,50 @@ public class Client extends AsyncTask<Void, Void, Void> {
         streams();
 
         while(true) {
-            if(inputStream.available() != 0) {
-                Object temp = inputStream.readObject();
-                Log.d(tag, temp.toString());
+            if(isReady) {
+                outputStream.writeObject(ready);
+
+//                Log.d(tag, receiving());
+//                if(receiving().equals("Scan Complete")) {
+//                    scanned = true;
+//                    Log.d(tag,"Scan complete, moving onto next action");
+//                }
+                isReady = false;
+                Log.d(tag, "Reset");
+
+//                while(inputStream.available() == 0) {}
+
+                if(receiving().equals("Scan complete")) {
+                    scanned = true;
+                    Log.d(tag, "scanned");
+
+                }
             }
 
-            if(isReady) { outputStream.writeObject(ready); sendReady(); }
-            if(isDone) { outputStream.writeObject(done); sendDone(); }
-            if(decode) { outputStream.writeObject(decodeData);}
-            if(toCSV) { outputStream.writeObject(csv); sendCSV(); }
+
+//            if(isDone) {
+//                outputStream.writeObject(done);
+//                isDone = false;
+//
+//                while(inputStream.available() != 0) {
+//                    results.add(receiving());
+//                    Log.d(tag, receiving());
+//                }
+//
+//                Log.d(tag, "Results data received");
+//            }
+//
+//            if(code) {
+//                outputStream.writeObject(decodeData);
+//                code = false;
+//                Log.d(tag, "Decode data sent, starting Ready processes");
+//            }
+//
+//            if(toCSV) {
+//                outputStream.writeObject(csv);
+//                toCSV = false;
+//                Log.d(tag, "Asking for CSV");
+//            }
         }
     }
 }

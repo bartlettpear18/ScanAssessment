@@ -63,9 +63,9 @@ public class Generator {
 
     //Setup
     public void instantiate1D() throws WriterException {
-        linear.add(BarcodeFormat.CODE_39);
+//        linear.add(BarcodeFormat.CODE_39);
         linear.add(BarcodeFormat.CODABAR);
-        linear.add(BarcodeFormat.CODE_128);
+//        linear.add(BarcodeFormat.CODE_128);
     }
 
     public void instantiate2D() throws WriterException {

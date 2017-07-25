@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         client = new Client();
-        client.execute();
 
     }
 
@@ -30,18 +29,21 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LinearBarcodes.class);
         startActivity(intent);
         Log.d(tag, "Starting Linear Barcodes");
+        client.execute();
     }
 
     public void matrixBarcodes(View view) {
         Intent intent = new Intent(this, MatrixBarcodes.class);
         startActivity(intent);
         Log.d(tag, "Starting Matrix Barcodes");
+        client.execute();
     }
 
     public void mixBarcodes(View view) {
         Intent intent = new Intent(this, MixBarcodes.class);
         startActivity(intent);
         Log.d(tag, "Starting Mixed Barcodes");
+        client.execute();
     }
 
     public void setIP(View view) {
@@ -51,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testConnection(View view) {
-        System.out.println(client.getIp());
-        Intent intent = new Intent(this, Results.class);
-        startActivity(intent);
+        Log.d(tag, client.getIp());
         Log.d(tag, "Testing TCP");
     }
 }
