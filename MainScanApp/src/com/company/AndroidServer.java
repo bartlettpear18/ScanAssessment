@@ -9,13 +9,12 @@ import java.util.ArrayList;
 
 import static com.company.Main.getMed;
 
+//        Application.launch(Display.class,args);
 
 public class AndroidServer implements Runnable{
 
 
     public Thread thread = null;
-    public static String currentString = new String("");
-    public static int currentInt;
     public int decodeData;
 
     //AndroidServer variables
@@ -27,14 +26,11 @@ public class AndroidServer implements Runnable{
     private ObjectInputStream inputStream = null;
     private ObjectOutputStream outputStream = null;
 
-    //Boolean swtiches
-
     //Strings
     private String scanComplete = new String("Scan complete");
 
     //Results data
     public static ArrayList<String> resultsData = new ArrayList<>();
-
 
     private void streams() throws IOException {
         outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -46,17 +42,6 @@ public class AndroidServer implements Runnable{
         server = new ServerSocket(port);
         socket = server.accept();
         System.out.println("AndroidServer connected to Socket");
-    }
-
-    private boolean isInt(String input) {
-        try {
-            Integer.parseInt(input);
-        } catch(NumberFormatException e) {
-            return false;
-        } catch(NullPointerException e) {
-            return false;
-        }
-        return true;
     }
 
     private String receiveFromAndroid() throws IOException, ClassNotFoundException, InterruptedException {
@@ -84,34 +69,33 @@ public class AndroidServer implements Runnable{
             setup();
             streams();
 
-            while(true) {
+            decodeData = Integer.parseInt(receiveFromAndroid());
+            System.out.println(decodeData);
 
-//                if(isInt(receiveFromAndroid())) {
-//                    System.out.println("Code recieved: " + receiveFromAndroid());
-//                    decodeData = Integer.parseInt(receiveFromAndroid());
-//                    System.out.println("Decode data set to: " + decodeData);
-//                }
+            while(true) {
 
                 if(receiveFromAndroid().equals("Ready")) {
                     getMed().changeIsReady();
                     System.out.println("Received ready, prepping to send to Driver");
 
-                    while(!getMed().getIsScanComplete()) {}
-
-                    if(getMed().getIsScanComplete()) {
-                        sendToAndroid(scanComplete);
-                        System.out.println("Scan complete. Sending to Android");
-                        getMed().changeIsScanComplete();
-                        System.out.println("Done");
-                    }
+//                    while(!getMed().getIsScanComplete()) {}
+//
+//                    if(getMed().getIsScanComplete()) {
+//                        System.out.println("Sending message to Android");
+//                        sendToAndroid(scanComplete);
+//                        outputStream.flush();
+//                        System.out.println("Scan complete. Sending to Android");
+//                        getMed().changeIsScanComplete();
+//                        System.out.println("Done");
+//                    }
 
                 }
 
-                if(receiveFromAndroid().equals("Done")) {
-                    for (String data : resultsData) {
-                        sendToAndroid(data);
-                    }
-                }
+//                if(receiveFromAndroid().equals("Done")) {
+//                    for (String data : resultsData) {
+//                        sendToAndroid(data);
+//                    }
+//                }
 
 
                 if(inputStream.available() != 0) {

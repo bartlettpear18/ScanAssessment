@@ -22,7 +22,7 @@ public class Main {
         DriverServer driverServer = new DriverServer();
         driverServer.start("Driver Thread");
 
-//        Application.launch(Display.class,args);
+        Application.launch(Display.class,args);
 
     }
 

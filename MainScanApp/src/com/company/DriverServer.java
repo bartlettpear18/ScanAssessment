@@ -80,15 +80,15 @@ public class DriverServer implements Runnable{
                     System.out.println("Telling driver ready");
                     sendToDriver(ready);
                     getMed().changeIsReady();
-                    System.out.println("Message sent");
+                    System.out.println("Message sent to driver");
 
-                    while(inputStream.available() == 0) {}
-
-                    if(receiveFromDriver().equals("Scan complete")){
-                        getMed().changeIsScanComplete();
-                        System.out.println(getMed().getIsScanComplete());
-                        System.out.println("Received from driver that Scan completed. Changed bool");
-                    }
+//                    while(inputStream.available() == 0) {}
+//
+//                    if(receiveFromDriver().equals("Scan complete")){
+//                        getMed().changeIsScanComplete();
+//                        System.out.println(getMed().getIsScanComplete());
+//                        System.out.println("Received from driver that Scan completed. Changed bool");
+//                    }
                 }
 
                 if(inputStream.available() != 0) {

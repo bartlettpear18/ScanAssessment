@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LinearBarcodes.class);
         startActivity(intent);
         Log.d(tag, "Starting Linear Barcodes");
-        client.execute();
+//        client.execute();
     }
 
     public void matrixBarcodes(View view) {

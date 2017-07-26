@@ -26,7 +26,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
     //Server variables
     private static Socket socket;
     private static int port = 5000;
-    public static String ip = "10.0.0.162"; //192.168.43.81";
+    public static String ip = "10.0.0.162";//192.168.43.81";
 
     //Stream variables
     private ObjectInputStream inputStream = null;
@@ -41,7 +41,6 @@ public class Client extends AsyncTask<Void, Void, Void> {
     //Booleans
     private boolean isReady = false;
     private boolean isDone = false;
-    private boolean code = false;
     private boolean toCSV = false;
     public static boolean scanned = false;
 
@@ -65,21 +64,12 @@ public class Client extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    public void sendReady() throws InterruptedException {
-        isReady = !isReady;
-    }
-    public void sendDone() throws InterruptedException {
-        isDone = !isDone;
-    }
-
-    public void sendCSV() throws InterruptedIOException {
-        toCSV = !toCSV;
-    }
+    public void sendReady() throws InterruptedException { isReady = !isReady; }
+    public void sendDone() throws InterruptedException { isDone = !isDone; }
+    public void sendCSV() throws InterruptedIOException { toCSV = !toCSV; }
     public void sendCode(int data) throws InterruptedException {
-        code = !code;
         decodeData = data + "";
         Log.d(tag, String.valueOf(decodeData));
-        code = !code;
     }
 
 
@@ -130,25 +120,23 @@ public class Client extends AsyncTask<Void, Void, Void> {
         setup();
         streams();
 
+        while(decodeData.equals("")) {
+            Log.d(tag, "Waiting");
+        }
+        outputStream.writeObject(decodeData);
+        Log.d(tag, "Decode Object sent");
+        outputStream.flush();
+
         while(true) {
             if(isReady) {
                 outputStream.writeObject(ready);
-
-//                Log.d(tag, receiving());
-//                if(receiving().equals("Scan Complete")) {
-//                    scanned = true;
-//                    Log.d(tag,"Scan complete, moving onto next action");
-//                }
                 isReady = false;
-                Log.d(tag, "Reset");
 
-//                while(inputStream.available() == 0) {}
-
-                if(receiving().equals("Scan complete")) {
-                    scanned = true;
-                    Log.d(tag, "scanned");
-
-                }
+//                if(receiving().equals("Scan complete")) {
+//                    scanned = true;
+//                    Log.d(tag, "Scanned is true");
+//
+//                }
             }
 
 
@@ -164,17 +152,12 @@ public class Client extends AsyncTask<Void, Void, Void> {
 //                Log.d(tag, "Results data received");
 //            }
 //
-//            if(code) {
-//                outputStream.writeObject(decodeData);
-//                code = false;
-//                Log.d(tag, "Decode data sent, starting Ready processes");
-//            }
-//
 //            if(toCSV) {
 //                outputStream.writeObject(csv);
 //                toCSV = false;
 //                Log.d(tag, "Asking for CSV");
 //            }
+            outputStream.flush();
         }
     }
 }

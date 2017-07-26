@@ -31,8 +31,12 @@ public class LinearBarcodes extends AppCompatActivity {
         Log.d(tag, "Starting 1D Activity");
 
         try {
+            getClient().execute();
             gen = new Generator();
             gen.make1D();
+            getClient().sendCode(gen.getDecodeData());
+            Log.d(tag, "Code made");
+
 
             image = (ImageView) findViewById(R.id.imageView2);
             currentSym = (TextView) findViewById(R.id.currentSym);
@@ -40,78 +44,48 @@ public class LinearBarcodes extends AppCompatActivity {
 
         } catch (WriterException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
     }
 
     public void start(View view) throws WriterException, InterruptedException {
 
-        //Tell Main the expected decode data
-//        getClient().sendCode(gen.getDecodeData());
-
+        Log.d(tag, "Starting loop");
         String sym;
         String status = "Scanning...";
         scanStatus.setText(status);
 
-        /*
-        for(Bitmap map : gen.getOneDMaps()) {
-            //Change image
-            image.setImageBitmap(map);
-            Log.d(tag, "Image set");
 
-            //Update Current Symbology text field
-            sym = "Current Symbology: " + gen.getFormats().get(formatCounter);
-            currentSym.setText(sym);
-            formatCounter++;
-
-            //Tell main barcode is displayed
-            getClient().sendReady();
-            Log.d(tag, "Ready sent to Main. Waiting now.");
-
-            //Wait for scan to complete
-            while(!scanned) { }
-
-            Log.d(tag, "Finished waiting");
-            //Update Status after scan
-            scanStatus.setText("Scan Complete");
-            wait(500);
-            Log.d(tag, "Scan complete");
-        }
-        */
-        /*
         if (i < gen.getOneDMaps().size()-1) {
             image.setImageBitmap(gen.getOneDMaps().get(i));
+            Log.d(tag, "Set image");
 
             sym = "Current Symbology: " + gen.getFormats().get(i);
-            currentSym.setText(sym);
+            currentSym.setText(sym + i);
 
             //Tell main barcode is displayed
             getClient().sendReady();
+            Log.d(tag, "Sending ready");
 
-            //Wait for scan to complete
-            while(!scanned) { }
-
-            //Update Status after scan
-            scanStatus.setText("Scan Complete");
-            wait(500);
-            Log.d(tag, "Scan complete");
+//            //Wait for scan to complete
+//            while(!scanned) {}
+//            Log.d(tag, "Finished waiting");
+//
+//            //Update Status after scan
+//            scanStatus.setText("Scan Complete");
+//            Log.d(tag, "Scan complete");
+//
+//            scanned = false;
             i++;
+
+        } else {
+            //Move on to Results Activity after finishing test
+            Intent intent = new Intent(this, Results.class);
+            startActivity(intent);
         }
 
-
-        //Move on to Results Activity after finishing test
-        Intent intent = new Intent(this, Results.class);
-        startActivity(intent);
-        */
-        getClient().sendReady();
-
-        while(!scanned) { }
-
-        Log.d(tag, "Finished waiting");
-        //Update Status after scan
-        scanStatus.setText("Scan Complete");
-
     }
-
 
 }

@@ -86,6 +86,13 @@ public class Generator {
         Log.d(tag, "Generated code: " + decodeData);
     }
 
+    private int randomCode() {
+        int start = 100000;
+        int end = 1000000;
+        int code = Math.abs((int) (Math.random()*(start-end)+start));
+        return code;
+    }
+
     /**
      * To randomize the order of Barcodes displayed
      * @param range
@@ -111,7 +118,7 @@ public class Generator {
         int range = linear.size();
         for(int i = 0; i < numTests-1; i++) {
             int loc = randomLoc(range);
-            Bitmap map = makeBitmap(decodeData, linear.get(loc));
+            Bitmap map = makeBitmap(randomCode(), linear.get(0));
             barcodes.add(map);
             formats.add(get1DFormat(loc));
             Log.d(tag, "Map created for: " + formats.get(i));
