@@ -26,7 +26,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
     //Server variables
     private static Socket socket;
     private static int port = 5000;
-    public static String ip = "10.0.0.162";//192.168.43.81";
+    public static String ip = "192.168.43.81";
 
     //Stream variables
     private ObjectInputStream inputStream = null;
@@ -120,44 +120,19 @@ public class Client extends AsyncTask<Void, Void, Void> {
         setup();
         streams();
 
-        while(decodeData.equals("")) {
+        while (decodeData.equals("")) {
             Log.d(tag, "Waiting");
         }
         outputStream.writeObject(decodeData);
         Log.d(tag, "Decode Object sent");
         outputStream.flush();
 
-        while(true) {
-            if(isReady) {
+        while (true) {
+            if (isReady) {
                 outputStream.writeObject(ready);
                 isReady = false;
-
-//                if(receiving().equals("Scan complete")) {
-//                    scanned = true;
-//                    Log.d(tag, "Scanned is true");
-//
-//                }
+                outputStream.flush();
             }
-
-
-//            if(isDone) {
-//                outputStream.writeObject(done);
-//                isDone = false;
-//
-//                while(inputStream.available() != 0) {
-//                    results.add(receiving());
-//                    Log.d(tag, receiving());
-//                }
-//
-//                Log.d(tag, "Results data received");
-//            }
-//
-//            if(toCSV) {
-//                outputStream.writeObject(csv);
-//                toCSV = false;
-//                Log.d(tag, "Asking for CSV");
-//            }
-            outputStream.flush();
         }
     }
 }

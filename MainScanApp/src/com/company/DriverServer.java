@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static com.company.Display.setText2;
 import static com.company.Main.getMed;
 import static com.company.Mediator.ready;
 
@@ -64,6 +65,8 @@ public class DriverServer implements Runnable{
         System.out.println("Sent to Driver: " + msg);
     }
 
+    public boolean driverInput() throws IOException { return inputStream.available() != 0; }
+
     private void close() throws IOException {
         socket.close();
         server.close();
@@ -77,22 +80,25 @@ public class DriverServer implements Runnable{
 
             while(true) {
                 if(getMed().getIsReady()) {
-                    System.out.println("Telling driver ready");
                     sendToDriver(ready);
                     getMed().changeIsReady();
-                    System.out.println("Message sent to driver");
 
-//                    while(inputStream.available() == 0) {}
-//
-//                    if(receiveFromDriver().equals("Scan complete")){
-//                        getMed().changeIsScanComplete();
-//                        System.out.println(getMed().getIsScanComplete());
-//                        System.out.println("Received from driver that Scan completed. Changed bool");
+                    while(!(inputStream.available() > 0)) {
+                        System.out.println("Debug statement");
+                    }
+
+                    System.out.println(receiveFromDriver());
+
+//                    if(receiveFromDriver().equals("Scan Complete")){
+//                        setText2("Scan Complete. Press next");
+//                        System.out.println("Message Recieved");
 //                    }
+
                 }
 
                 if(inputStream.available() != 0) {
-                    System.out.println(receiveFromDriver());
+//                    System.out.println(receiveFromDriver());
+//                    System.out.println("Message printed here");
                 }
 
             }
@@ -105,6 +111,7 @@ public class DriverServer implements Runnable{
     public void start(String name) {
         if(thread == null) {
             thread = new Thread(this, name);
+            thread.setDaemon(true);
             thread.start();
             System.out.println("Starting " + thread.getName());
         }

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.google.zxing.WriterException;
 
+import java.io.IOException;
+
 import static com.bartlettpear18gmail.barcodetestapp.MainActivity.getClient;
 
 public class MixBarcodes extends AppCompatActivity {
@@ -29,15 +31,16 @@ public class MixBarcodes extends AppCompatActivity {
         Log.d(tag, "Starting Mix Activity");
 
         try {
+            getClient().execute();
             gen = new Generator();
             gen.makeMix();
+            getClient().sendCode(gen.getDecodeData());
+            Log.d(tag, "Code made");
 
 
             image = (ImageView) findViewById(R.id.imageView2);
             currentSym = (TextView) findViewById(R.id.currentSym);
             scanStatus = (TextView) findViewById(R.id.scanStatus);
-            getClient().sendCode(gen.getDecodeData());
-
 
         } catch (WriterException e) {
             e.printStackTrace();
@@ -47,21 +50,29 @@ public class MixBarcodes extends AppCompatActivity {
 
     }
 
-    public void start(View view) throws WriterException, InterruptedException {
+    public void start(View view) throws WriterException, InterruptedException, IOException {
+
+        Log.d(tag, "Starting loop");
+        String sym;
+        String status = "Scanning...";
+        scanStatus.setText(status);
+
 
         if (i < gen.getMix().size()-1) {
-            image = (ImageView) findViewById(R.id.imageView2);
             image.setImageBitmap(gen.getMix().get(i));
-            getClient().sendReady();
+            Log.d(tag, "Set image");
 
-            String sym = "Current Symbology: " + gen.getFormats().get(i);
-            currentSym.setText(sym);
-            scanStatus.setText("Scanning...");
+            sym = "Current Symbology: " + gen.getFormats().get(i);
+            currentSym.setText(sym + " " + i);
+
+            //Tell main barcode is displayed
+            getClient().sendReady();
+            Log.d(tag, "Sending ready");
+
             i++;
         } else {
             Intent intent = new Intent(this, Results.class);
             startActivity(intent);
-            getClient().sendDone();
         }
 
     }

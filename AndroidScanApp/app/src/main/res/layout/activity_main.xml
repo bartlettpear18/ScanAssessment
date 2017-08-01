@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:onClick="mixBarcodes"
-        android:text="Test 1D-2D Mix"
+        android:text="Test Both 1D and 2D"
         android:id="@+id/button4" />
 
     <Button
@@ -41,15 +41,6 @@
         android:onClick="setIP"
         android:text="Set Host IP "
         android:id="@+id/button5" />
-
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Test TCP"
-        android:id="@+id/tcp"
-        android:onClick="testConnection"
-        android:layout_weight="1" />
 
 
 </LinearLayout>

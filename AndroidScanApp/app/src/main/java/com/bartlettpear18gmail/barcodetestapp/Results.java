@@ -6,9 +6,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.util.ArrayList;
 
+import static com.bartlettpear18gmail.barcodetestapp.MainActivity.*;
 import static com.bartlettpear18gmail.barcodetestapp.MainActivity.getClient;
 
 public class Results extends AppCompatActivity {
@@ -32,6 +34,14 @@ public class Results extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        getClient().cancel(true);
+        setNull();
+        System.gc();
+
+    }
     public void setList() {
         list = (ListView) findViewById(R.id.listView);
         adapter = new ArrayAdapter<String>(this, R.layout.list, array);

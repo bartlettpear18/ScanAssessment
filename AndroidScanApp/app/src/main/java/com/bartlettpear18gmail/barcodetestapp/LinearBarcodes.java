@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.google.zxing.WriterException;
 
+import java.io.IOException;
+
 import static com.bartlettpear18gmail.barcodetestapp.MainActivity.getClient;
 import static com.bartlettpear18gmail.barcodetestapp.Client.scanned;
 
@@ -50,34 +52,26 @@ public class LinearBarcodes extends AppCompatActivity {
 
     }
 
-    public void start(View view) throws WriterException, InterruptedException {
+    public void next(View view) throws WriterException, InterruptedException, IOException {
 
         Log.d(tag, "Starting loop");
         String sym;
         String status = "Scanning...";
         scanStatus.setText(status);
+        Log.d(tag, String.valueOf(gen.getOneDMaps().size()));
 
 
-        if (i < gen.getOneDMaps().size()-1) {
+        if (i < gen.getOneDMaps().size()) {
             image.setImageBitmap(gen.getOneDMaps().get(i));
             Log.d(tag, "Set image");
 
             sym = "Current Symbology: " + gen.getFormats().get(i);
-            currentSym.setText(sym + i);
+            currentSym.setText(sym + " " + i);
 
             //Tell main barcode is displayed
             getClient().sendReady();
             Log.d(tag, "Sending ready");
 
-//            //Wait for scan to complete
-//            while(!scanned) {}
-//            Log.d(tag, "Finished waiting");
-//
-//            //Update Status after scan
-//            scanStatus.setText("Scan Complete");
-//            Log.d(tag, "Scan complete");
-//
-//            scanned = false;
             i++;
 
         } else {

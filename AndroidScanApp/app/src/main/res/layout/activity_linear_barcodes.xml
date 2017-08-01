@@ -12,9 +12,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
+        android:text="Scan"
         android:id="@+id/barcode"
-        android:onClick="start"
+        android:onClick="next"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"/>

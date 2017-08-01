@@ -61,6 +61,8 @@ public class Generator {
 
     public int getDecodeData() { return decodeData; }
 
+    ///////////////////////////////////////change instantiat1d to accomodate all barcodes ////////////////////////////////////////////////
+
     //Setup
     public void instantiate1D() throws WriterException {
 //        linear.add(BarcodeFormat.CODE_39);
@@ -116,9 +118,9 @@ public class Generator {
 
         ArrayList<Bitmap> barcodes = new ArrayList<Bitmap>(numTests);
         int range = linear.size();
-        for(int i = 0; i < numTests-1; i++) {
+        for(int i = 0; i < numTests; i++) {
             int loc = randomLoc(range);
-            Bitmap map = makeBitmap(randomCode(), linear.get(0));
+            Bitmap map = makeBitmap(randomCode(), linear.get(0)); //Currently set to make random code for every bitmap, change so one code for all bitmaps////////////////////////////////
             barcodes.add(map);
             formats.add(get1DFormat(loc));
             Log.d(tag, "Map created for: " + formats.get(i));
@@ -131,7 +133,7 @@ public class Generator {
         ArrayList<Bitmap> barcodes = new ArrayList<Bitmap>(numTests);
         int range = twoDimensional.size();
 
-        for(int i = 0; i < numTests-1; i++) {
+        for(int i = 0; i < numTests; i++) {
             int loc = randomLoc(range);
             Bitmap map = makeBitmap(decodeData, twoDimensional.get(loc));
             barcodes.add(map);
@@ -147,7 +149,7 @@ public class Generator {
         int length1 = linear.size();
         int length2 = twoDimensional.size();
 
-        for (int i =0 ; i < numTests-1; i++) {
+        for (int i =0 ; i < numTests; i++) {
             if(i%2==1) {
                 int loc = randomLoc(length1);
                 Bitmap map = makeBitmap(decodeData, linear.get(loc));

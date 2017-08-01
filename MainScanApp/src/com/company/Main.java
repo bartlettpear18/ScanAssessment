@@ -4,12 +4,17 @@ package com.company;
  */
 
 import javafx.application.Application;
+
+import java.io.File;
 import java.io.IOException;
 
 
 public class Main {
 
     static Mediator med;
+    static DriverServer driverServer;
+    public static String loc = "C:\\Users\\Joel.Bartlett18\\Documents\\Visual Studio 2017\\Projects\\ConsoleApp1\\ConsoleApp1\\obj\\Debug\\";
+
     public static void main(String[] args) throws IOException {
 
         med = new Mediator();
@@ -19,12 +24,17 @@ public class Main {
         AndroidServer androidServer = new AndroidServer();
         androidServer.start("Android Thread");
 
-        DriverServer driverServer = new DriverServer();
+        driverServer = new DriverServer();
         driverServer.start("Driver Thread");
 
+//        Runtime.getRuntime().exec(loc + "ConsoleApp1.exe", null, new File(loc));
+
         Application.launch(Display.class,args);
+
 
     }
 
     public static Mediator getMed() { return med; }
+
+    public static DriverServer getDriverServer() { return driverServer; }
 }

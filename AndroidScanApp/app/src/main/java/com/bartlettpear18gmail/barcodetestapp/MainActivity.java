@@ -25,35 +25,35 @@ public class MainActivity extends AppCompatActivity {
 
     public static Client getClient() { return client; }
 
+    public static void setNull() { client = null; }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        client = new Client();
+    }
+
     public void linearBarcodes(View view) {
         Intent intent = new Intent(this, LinearBarcodes.class);
         startActivity(intent);
         Log.d(tag, "Starting Linear Barcodes");
-//        client.execute();
     }
 
     public void matrixBarcodes(View view) {
         Intent intent = new Intent(this, MatrixBarcodes.class);
         startActivity(intent);
         Log.d(tag, "Starting Matrix Barcodes");
-        client.execute();
     }
 
     public void mixBarcodes(View view) {
         Intent intent = new Intent(this, MixBarcodes.class);
         startActivity(intent);
         Log.d(tag, "Starting Mixed Barcodes");
-        client.execute();
     }
 
     public void setIP(View view) {
         Intent intent = new Intent(this, NetworkSetup.class);
         startActivity(intent);
         Log.d(tag, "Starting IP setup");
-    }
-
-    public void testConnection(View view) {
-        Log.d(tag, client.getIp());
-        Log.d(tag, "Testing TCP");
     }
 }

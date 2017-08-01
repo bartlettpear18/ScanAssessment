@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.google.zxing.WriterException;
 
+import java.io.IOException;
+
 import static com.bartlettpear18gmail.barcodetestapp.MainActivity.getClient;
 
 public class MatrixBarcodes extends AppCompatActivity {
@@ -29,15 +31,16 @@ public class MatrixBarcodes extends AppCompatActivity {
         Log.d(tag, "Starting 2D Activity");
 
         try {
+            getClient().execute();
             gen = new Generator();
             gen.make2D();
+            getClient().sendCode(gen.getDecodeData());
+            Log.d(tag, "Code made");
 
 
             image = (ImageView) findViewById(R.id.imageView2);
             currentSym = (TextView) findViewById(R.id.currentSym);
             scanStatus = (TextView) findViewById(R.id.scanStatus);
-            getClient().sendCode(gen.getDecodeData());
-
 
         } catch (WriterException e) {
             e.printStackTrace();
@@ -47,21 +50,30 @@ public class MatrixBarcodes extends AppCompatActivity {
 
     }
 
-    public void start(View view) throws WriterException, InterruptedException {
+    public void start(View view) throws WriterException, InterruptedException, IOException {
+
+        Log.d(tag, "Starting loop");
+        String sym;
+        String status = "Scanning...";
+        scanStatus.setText(status);
+
 
         if (i < gen.getTwoDMaps().size()-1) {
             image.setImageBitmap(gen.getTwoDMaps().get(i));
+            Log.d(tag, "Set image");
+
+            sym = "Current Symbology: " + gen.getFormats().get(i);
+            currentSym.setText(sym + " " + i);
+
+            //Tell main barcode is displayed
             getClient().sendReady();
+            Log.d(tag, "Sending ready");
 
 
-            String sym = "Current Symbology: " + gen.getFormats().get(i);
-            currentSym.setText(sym);
-            scanStatus.setText("Scanning...");
             i++;
         } else {
             Intent intent = new Intent(this, Results.class);
             startActivity(intent);
-            getClient().sendDone();
         }
 
     }}

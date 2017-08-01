@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import static com.company.Display.setText2;
+import static com.company.Main.getDriverServer;
 import static com.company.Main.getMed;
 
 //        Application.launch(Display.class,args);
@@ -68,6 +70,7 @@ public class AndroidServer implements Runnable{
         try {
             setup();
             streams();
+            setText2("Android connected");
 
             decodeData = Integer.parseInt(receiveFromAndroid());
             System.out.println(decodeData);
@@ -75,27 +78,9 @@ public class AndroidServer implements Runnable{
             while(true) {
 
                 if(receiveFromAndroid().equals("Ready")) {
+                    setText2("Scanning...");
                     getMed().changeIsReady();
-                    System.out.println("Received ready, prepping to send to Driver");
-
-//                    while(!getMed().getIsScanComplete()) {}
-//
-//                    if(getMed().getIsScanComplete()) {
-//                        System.out.println("Sending message to Android");
-//                        sendToAndroid(scanComplete);
-//                        outputStream.flush();
-//                        System.out.println("Scan complete. Sending to Android");
-//                        getMed().changeIsScanComplete();
-//                        System.out.println("Done");
-//                    }
-
                 }
-
-//                if(receiveFromAndroid().equals("Done")) {
-//                    for (String data : resultsData) {
-//                        sendToAndroid(data);
-//                    }
-//                }
 
 
                 if(inputStream.available() != 0) {
@@ -117,6 +102,7 @@ public class AndroidServer implements Runnable{
     public void start(String name) {
         if(thread == null) {
             thread = new Thread(this, name);
+            thread.setDaemon(true);
             thread.start();
             System.out.println("Starting " + thread.getName());
         }
