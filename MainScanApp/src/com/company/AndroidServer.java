@@ -31,6 +31,8 @@ public class AndroidServer implements Runnable{
     //Strings
     private String scanComplete = new String("Scan complete");
 
+    public int getDecodeData() { return decodeData; }
+
     //Results data
     public static ArrayList<String> resultsData = new ArrayList<>();
 
@@ -73,7 +75,8 @@ public class AndroidServer implements Runnable{
             setText2("Android connected");
 
             decodeData = Integer.parseInt(receiveFromAndroid());
-            System.out.println(decodeData);
+            System.out.println("Barcode decode data: " + decodeData);
+
 
             while(true) {
 
@@ -84,7 +87,7 @@ public class AndroidServer implements Runnable{
 
 
                 if(inputStream.available() != 0) {
-                    System.out.println(receiveFromAndroid());
+                    System.out.println("Message from Android: " + receiveFromAndroid());
                 }
 
             }

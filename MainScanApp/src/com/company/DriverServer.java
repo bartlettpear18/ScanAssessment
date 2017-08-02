@@ -84,22 +84,17 @@ public class DriverServer implements Runnable{
                     getMed().changeIsReady();
 
                     while(!(inputStream.available() > 0)) {
-                        System.out.println("Debug statement");
                     }
 
-                    System.out.println(receiveFromDriver());
 
-//                    if(receiveFromDriver().equals("Scan Complete")){
-//                        setText2("Scan Complete. Press next");
-//                        System.out.println("Message Recieved");
-//                    }
+                    if(inputStream.available() != 0) {
+                        setText2("Scan Complete. Press next");
+                        System.out.println("Decoded data from driver: " + receiveFromDriver());
+                    }
 
                 }
 
-                if(inputStream.available() != 0) {
-//                    System.out.println(receiveFromDriver());
-//                    System.out.println("Message printed here");
-                }
+                if(inputStream.available() != 0) {}
 
             }
         }

@@ -120,7 +120,7 @@ public class Generator {
         int range = linear.size();
         for(int i = 0; i < numTests; i++) {
             int loc = randomLoc(range);
-            Bitmap map = makeBitmap(randomCode(), linear.get(0)); //Currently set to make random code for every bitmap, change so one code for all bitmaps////////////////////////////////
+            Bitmap map = makeBitmap(decodeData, linear.get(0));
             barcodes.add(map);
             formats.add(get1DFormat(loc));
             Log.d(tag, "Map created for: " + formats.get(i));

@@ -27,10 +27,9 @@ public class Main {
         driverServer = new DriverServer();
         driverServer.start("Driver Thread");
 
-//        Runtime.getRuntime().exec(loc + "ConsoleApp1.exe", null, new File(loc));
+        Runtime.getRuntime().exec(loc + "ConsoleApp1.exe", null, new File(loc));
 
         Application.launch(Display.class,args);
-
 
     }
 

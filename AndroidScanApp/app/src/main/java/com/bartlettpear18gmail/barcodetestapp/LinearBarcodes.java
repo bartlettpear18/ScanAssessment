@@ -66,7 +66,7 @@ public class LinearBarcodes extends AppCompatActivity {
             Log.d(tag, "Set image");
 
             sym = "Current Symbology: " + gen.getFormats().get(i);
-            currentSym.setText(sym + " " + i);
+            currentSym.setText(sym + " " + i+1);
 
             //Tell main barcode is displayed
             getClient().sendReady();
