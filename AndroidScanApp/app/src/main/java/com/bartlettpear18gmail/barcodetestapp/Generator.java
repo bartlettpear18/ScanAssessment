@@ -20,6 +20,7 @@ public class Generator {
     private ArrayList<BarcodeFormat> twoDimensional = new ArrayList<BarcodeFormat>();
 
     private ArrayList<String> formats = new ArrayList<String>(numTests);
+    private ArrayList<Integer> codes = new ArrayList<>(numTests);
 
     private ArrayList<Bitmap> oneDMaps = new ArrayList<Bitmap>();
     private ArrayList<Bitmap> twoDMaps = new ArrayList<Bitmap>();
@@ -27,12 +28,10 @@ public class Generator {
 
 
     public static final int numTests = 10;
-    private int decodeData;
     private String tag = "Debug";
 
 
     public Generator() throws WriterException {
-        generateCode();
         instantiate1D();
         instantiate2D();
     }
@@ -58,21 +57,21 @@ public class Generator {
     }
 
     public ArrayList<String> getFormats() { return formats; }
+    public ArrayList<Integer> getCodes() { return codes; }
 
-    public int getDecodeData() { return decodeData; }
 
     ///////////////////////////////////////change instantiat1d to accomodate all barcodes ////////////////////////////////////////////////
 
     //Setup
     public void instantiate1D() throws WriterException {
-//        linear.add(BarcodeFormat.CODE_39);
+        linear.add(BarcodeFormat.CODE_39);
         linear.add(BarcodeFormat.CODABAR);
-//        linear.add(BarcodeFormat.CODE_128);
+        linear.add(BarcodeFormat.CODE_128);
     }
 
     public void instantiate2D() throws WriterException {
         twoDimensional.add(BarcodeFormat.QR_CODE);
-        twoDimensional.add(BarcodeFormat.DATA_MATRIX);
+//        twoDimensional.add(BarcodeFormat.DATA_MATRIX);
         twoDimensional.add(BarcodeFormat.PDF_417);
     }
 
@@ -80,12 +79,11 @@ public class Generator {
      * All the barcodes displayed at the test will have the same randomly generated code
      * @return
      */
-    private void generateCode() {
-        int start = 100000;
-        int end = 1000000;
-        int code = Math.abs((int) (Math.random()*(start-end)+start));
-        decodeData = code;
+    private int generateCode() {
+        int decodeData = randomCode();
+        codes.add(decodeData);
         Log.d(tag, "Generated code: " + decodeData);
+        return decodeData;
     }
 
     private int randomCode() {
@@ -120,7 +118,7 @@ public class Generator {
         int range = linear.size();
         for(int i = 0; i < numTests; i++) {
             int loc = randomLoc(range);
-            Bitmap map = makeBitmap(decodeData, linear.get(0));
+            Bitmap map = makeBitmap(generateCode(), linear.get(0));
             barcodes.add(map);
             formats.add(get1DFormat(loc));
             Log.d(tag, "Map created for: " + formats.get(i));
@@ -135,7 +133,7 @@ public class Generator {
 
         for(int i = 0; i < numTests; i++) {
             int loc = randomLoc(range);
-            Bitmap map = makeBitmap(decodeData, twoDimensional.get(loc));
+            Bitmap map = makeBitmap(generateCode(), twoDimensional.get(loc));
             barcodes.add(map);
             formats.add(get2DFormat(loc));
             Log.d(tag, "Map created for: " + formats.get(i));
@@ -152,13 +150,13 @@ public class Generator {
         for (int i =0 ; i < numTests; i++) {
             if(i%2==1) {
                 int loc = randomLoc(length1);
-                Bitmap map = makeBitmap(decodeData, linear.get(loc));
+                Bitmap map = makeBitmap(generateCode(), linear.get(loc));
                 barcodes.add(map);
                 formats.add(get1DFormat(loc));
                 Log.d(tag, "Map created for: " + formats.get(i));
             } else {
                 int loc = randomLoc(length2);
-                Bitmap map = makeBitmap(decodeData, twoDimensional.get(loc));
+                Bitmap map = makeBitmap(generateCode(), twoDimensional.get(loc));
                 barcodes.add(map);
                 formats.add(get2DFormat(loc));
                 Log.d(tag, "Map created for: " + formats.get(i));

@@ -34,7 +34,6 @@ public class MatrixBarcodes extends AppCompatActivity {
             getClient().execute();
             gen = new Generator();
             gen.make2D();
-            getClient().sendCode(gen.getDecodeData());
             Log.d(tag, "Code made");
 
 
@@ -43,8 +42,6 @@ public class MatrixBarcodes extends AppCompatActivity {
             scanStatus = (TextView) findViewById(R.id.scanStatus);
 
         } catch (WriterException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
@@ -66,14 +63,10 @@ public class MatrixBarcodes extends AppCompatActivity {
             currentSym.setText(sym + " " + i+1);
 
             //Tell main barcode is displayed
-            getClient().sendReady();
             Log.d(tag, "Sending ready");
 
 
             i++;
-        } else {
-            Intent intent = new Intent(this, Results.class);
-            startActivity(intent);
         }
 
     }}

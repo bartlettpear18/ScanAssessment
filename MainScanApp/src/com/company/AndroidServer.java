@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import static com.company.Display.setText2;
+import static com.company.Main.driverServer;
 import static com.company.Main.getDriverServer;
 import static com.company.Main.getMed;
 
@@ -17,7 +18,6 @@ public class AndroidServer implements Runnable{
 
 
     public Thread thread = null;
-    public int decodeData;
 
     //AndroidServer variables
     private static ServerSocket server;
@@ -28,29 +28,20 @@ public class AndroidServer implements Runnable{
     private ObjectInputStream inputStream = null;
     private ObjectOutputStream outputStream = null;
 
-    //Strings
-    private String scanComplete = new String("Scan complete");
-
-    public int getDecodeData() { return decodeData; }
-
-    //Results data
-    public static ArrayList<String> resultsData = new ArrayList<>();
-
     private void streams() throws IOException {
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
         System.out.println("Streams made");
     }
-
     private void setup() throws IOException {
         server = new ServerSocket(port);
         socket = server.accept();
         System.out.println("AndroidServer connected to Socket");
     }
 
-    private String receiveFromAndroid() throws IOException, ClassNotFoundException, InterruptedException {
-        String temp = (String) inputStream.readObject();
-        return temp;
+    private String checkStream() throws IOException, ClassNotFoundException {
+        String tmp = (String) inputStream.readObject();
+        return tmp;
     }
 
     private void sendToAndroid(String msg) throws IOException {
@@ -58,13 +49,12 @@ public class AndroidServer implements Runnable{
         outputStream.writeObject(temp);
         System.out.println("Sending: " + msg);
     }
-
     private void close() throws IOException {
         inputStream.close();
         outputStream.flush();
         outputStream.close();
         socket.close();
-        System.out.println("Streams closed");
+        System.out.println("Android streams closed");
     }
 
     @Override
@@ -73,31 +63,27 @@ public class AndroidServer implements Runnable{
             setup();
             streams();
             setText2("Android connected");
-
-            decodeData = Integer.parseInt(receiveFromAndroid());
-            System.out.println("Barcode decode data: " + decodeData);
-
-
-            while(true) {
-
-                if(receiveFromAndroid().equals("Ready")) {
+            int i = 0;
+            while(i <= 9) {
+                String tmp = checkStream();
+                if(tmp != null) {
                     setText2("Scanning...");
+                    getMed().addCodes(tmp);
                     getMed().changeIsReady();
+                    i++;
                 }
-
-
-                if(inputStream.available() != 0) {
-                    System.out.println("Message from Android: " + receiveFromAndroid());
-                }
-
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }

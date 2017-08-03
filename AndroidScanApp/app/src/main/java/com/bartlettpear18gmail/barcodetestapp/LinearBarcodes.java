@@ -14,7 +14,6 @@ import com.google.zxing.WriterException;
 import java.io.IOException;
 
 import static com.bartlettpear18gmail.barcodetestapp.MainActivity.getClient;
-import static com.bartlettpear18gmail.barcodetestapp.Client.scanned;
 
 public class LinearBarcodes extends AppCompatActivity {
 
@@ -36,8 +35,6 @@ public class LinearBarcodes extends AppCompatActivity {
             getClient().execute();
             gen = new Generator();
             gen.make1D();
-            getClient().sendCode(gen.getDecodeData());
-            Log.d(tag, "Code made");
 
 
             image = (ImageView) findViewById(R.id.imageView2);
@@ -46,38 +43,29 @@ public class LinearBarcodes extends AppCompatActivity {
 
         } catch (WriterException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
 
     }
 
     public void next(View view) throws WriterException, InterruptedException, IOException {
 
-        Log.d(tag, "Starting loop");
         String sym;
         String status = "Scanning...";
         scanStatus.setText(status);
-        Log.d(tag, String.valueOf(gen.getOneDMaps().size()));
 
 
         if (i < gen.getOneDMaps().size()) {
             image.setImageBitmap(gen.getOneDMaps().get(i));
-            Log.d(tag, "Set image");
 
             sym = "Current Symbology: " + gen.getFormats().get(i);
-            currentSym.setText(sym + " " + i+1);
+            currentSym.setText(sym + " " + (i+1));
 
             //Tell main barcode is displayed
-            getClient().sendReady();
+            getClient().sendReady(gen.getCodes().get(i));
             Log.d(tag, "Sending ready");
 
             i++;
 
-        } else {
-            //Move on to Results Activity after finishing test
-            Intent intent = new Intent(this, Results.class);
-            startActivity(intent);
         }
 
     }

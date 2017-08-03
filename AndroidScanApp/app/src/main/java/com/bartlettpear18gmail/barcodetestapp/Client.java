@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -26,23 +27,17 @@ public class Client extends AsyncTask<Void, Void, Void> {
     //Server variables
     private static Socket socket;
     private static int port = 5000;
-    public static String ip = "192.168.43.81";
+    public static String ip = "10.0.0.162";
 
     //Stream variables
     private ObjectInputStream inputStream = null;
     private ObjectOutputStream outputStream = null;
 
-    //Strings
-    private String ready = new String("Ready");
-    private String done = new String("Done");
-    private String csv = new String("CSV");
-    private String decodeData = new String("");
-
-    //Booleans
     private boolean isReady = false;
-    private boolean isDone = false;
     private boolean toCSV = false;
-    public static boolean scanned = false;
+
+    //Stupid cheating
+    private String currentCode = new String("");
 
     //Results
     public static ArrayList<String> results = new ArrayList<>();
@@ -64,14 +59,12 @@ public class Client extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    public void sendReady() throws InterruptedException { isReady = !isReady; }
-    public void sendDone() throws InterruptedException { isDone = !isDone; }
-    public void sendCSV() throws InterruptedIOException { toCSV = !toCSV; }
-    public void sendCode(int data) throws InterruptedException {
-        decodeData = data + "";
-        Log.d(tag, String.valueOf(decodeData));
-    }
+    public void sendReady(int current) throws InterruptedException {
+        currentCode = String.valueOf(current);
+        isReady = !isReady;
 
+    }
+    public void sendCSV() throws InterruptedIOException { toCSV = !toCSV; }
 
     private static boolean checkIp(String text) {
         Pattern p = Pattern.compile(IP_PATTERN);
@@ -90,7 +83,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
         }
         return change;
     }
-    public String getIp() { return ip; }
+    public ArrayList<String> getResults() { return results; }
 
     private void setup() throws IOException {
         socket = new Socket(ip, port);
@@ -120,16 +113,9 @@ public class Client extends AsyncTask<Void, Void, Void> {
         setup();
         streams();
 
-        while (decodeData.equals("")) {
-            Log.d(tag, "Waiting");
-        }
-        outputStream.writeObject(decodeData);
-        Log.d(tag, "Decode Object sent");
-        outputStream.flush();
-
         while (true) {
             if (isReady) {
-                outputStream.writeObject(ready);
+                outputStream.writeObject(currentCode);
                 isReady = false;
                 outputStream.flush();
             }

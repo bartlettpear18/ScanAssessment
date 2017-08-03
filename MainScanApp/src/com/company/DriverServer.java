@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static com.company.Display.setAvgRuntime;
+import static com.company.Display.setPercentSucces;
 import static com.company.Display.setText2;
 import static com.company.Main.getMed;
 import static com.company.Mediator.ready;
@@ -62,7 +64,6 @@ public class DriverServer implements Runnable{
         toSendLenBytes[3] = (byte)((toSendLen >> 24) & 0xff);
         outputStream.write(toSendLenBytes);
         outputStream.write(toSendBytes);
-        System.out.println("Sent to Driver: " + msg);
     }
 
     public boolean driverInput() throws IOException { return inputStream.available() != 0; }
@@ -70,6 +71,7 @@ public class DriverServer implements Runnable{
     private void close() throws IOException {
         socket.close();
         server.close();
+        System.out.println("Driver streams closed");
     }
 
     @Override
@@ -78,28 +80,46 @@ public class DriverServer implements Runnable{
             setup();
             streams();
 
-            while(true) {
+            while(getMed().getDecodes().size() < getMed().getTests()) {
                 if(getMed().getIsReady()) {
                     sendToDriver(ready);
                     getMed().changeIsReady();
 
-                    while(!(inputStream.available() > 0)) {
-                    }
+                    while(!(inputStream.available() > 0 )) {}
 
 
                     if(inputStream.available() != 0) {
+                        String tmp = receiveFromDriver();
+                        tmp = tmp.substring(1,tmp.length()-1);
+                        getMed().addDecodes(tmp);
                         setText2("Scan Complete. Press next");
-                        System.out.println("Decoded data from driver: " + receiveFromDriver());
                     }
 
                 }
 
+                //Not sure why this is necessary, but it never works without it, so ..... blah
                 if(inputStream.available() != 0) {}
 
             }
+
+            String tmp = receiveFromDriver();
+            getMed().setAvgExecutionTime(Double.parseDouble(tmp));
+            setText2("Calculating Results...");
         }
         catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                close();
+                System.out.println("Set codes: " + getMed().getCodes());
+                System.out.println("Decodes: " + getMed().getDecodes());
+
+                setPercentSucces("Percent Success: " + String.valueOf(getMed().compare()));
+                setAvgRuntime("Average Execution Time (in Milliseconds): " + String.valueOf(getMed().getAvgExecutionTime()));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

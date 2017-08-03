@@ -17,18 +17,12 @@ public class Results extends AppCompatActivity {
 
     private ListView list;
     private ArrayAdapter adapter;
-    private ArrayList<String> array = new ArrayList<String>();
     private String tag = "Debug";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-
-
-        for(int i = 0; i < 5; i++ ) {
-            array.add("Scan Data");
-        }
 
         setList();
 
@@ -37,6 +31,11 @@ public class Results extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
+        try {
+            getClient().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         getClient().cancel(true);
         setNull();
         System.gc();
@@ -44,7 +43,7 @@ public class Results extends AppCompatActivity {
     }
     public void setList() {
         list = (ListView) findViewById(R.id.listView);
-        adapter = new ArrayAdapter<String>(this, R.layout.list, array);
+        adapter = new ArrayAdapter<String>(this, R.layout.list, getClient().getResults());
         list.setAdapter(adapter);
     }
 
