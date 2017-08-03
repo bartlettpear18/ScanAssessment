@@ -19,7 +19,6 @@ public class LinearBarcodes extends AppCompatActivity {
 
     private ImageView image;
     private TextView currentSym;
-    private TextView scanStatus;
 
     private Generator gen = null;
     private int i = 0;
@@ -39,7 +38,6 @@ public class LinearBarcodes extends AppCompatActivity {
 
             image = (ImageView) findViewById(R.id.imageView2);
             currentSym = (TextView) findViewById(R.id.currentSym);
-            scanStatus = (TextView) findViewById(R.id.scanStatus);
 
         } catch (WriterException e) {
             e.printStackTrace();
@@ -50,9 +48,6 @@ public class LinearBarcodes extends AppCompatActivity {
     public void next(View view) throws WriterException, InterruptedException, IOException {
 
         String sym;
-        String status = "Scanning...";
-        scanStatus.setText(status);
-
 
         if (i < gen.getOneDMaps().size()) {
             image.setImageBitmap(gen.getOneDMaps().get(i));
@@ -66,6 +61,8 @@ public class LinearBarcodes extends AppCompatActivity {
 
             i++;
 
+        } else {
+            currentSym.setText("Test finished. View results on desktop app");
         }
 
     }

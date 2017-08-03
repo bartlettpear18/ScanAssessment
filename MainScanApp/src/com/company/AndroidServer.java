@@ -68,9 +68,11 @@ public class AndroidServer implements Runnable{
                 String tmp = checkStream();
                 if(tmp != null) {
                     setText2("Scanning...");
-                    getMed().addCodes(tmp);
                     getMed().changeIsReady();
-                    i++;
+                    if(!tmp.equals("0")) {
+                        getMed().addCodes(tmp);
+                        i++;
+                    }
                 }
             }
 

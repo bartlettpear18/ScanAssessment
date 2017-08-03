@@ -13,13 +13,11 @@ public class Main {
 
     static Mediator med;
     static DriverServer driverServer;
-    public static String loc = "C:\\Users\\Joel.Bartlett18\\Documents\\Visual Studio 2017\\Projects\\ConsoleApp1\\ConsoleApp1\\obj\\Debug\\";
+    public static String loc = System.getProperty("user.dir") + "\\";
 
     public static void main(String[] args) throws IOException {
 
         med = new Mediator();
-
-
 
         AndroidServer androidServer = new AndroidServer();
         androidServer.start("Android Thread");
@@ -27,7 +25,7 @@ public class Main {
         driverServer = new DriverServer();
         driverServer.start("Driver Thread");
 
-        Runtime.getRuntime().exec(loc + "ConsoleApp1.exe", null, new File(loc));
+        Runtime.getRuntime().exec(loc + "Driver.exe", null, new File(loc));
 
         Application.launch(Display.class,args);
 

@@ -56,4 +56,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         Log.d(tag, "Starting IP setup");
     }
+
+    public void configureActivity(View view) {
+        Intent intent = new Intent(this, Configure.class);
+        startActivity(intent);
+        Log.d(tag, "Starting Configure activity");
+    }
 }

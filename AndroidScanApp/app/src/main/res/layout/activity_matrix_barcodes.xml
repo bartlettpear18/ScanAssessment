@@ -42,18 +42,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Current Symbology"
+            android:text="Current Symbology: Config"
             android:gravity="center"
             android:id="@+id/currentSym"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Scanning..."
-            android:id="@+id/scanStatus"
-            android:gravity="center"
             android:layout_weight="1"/>
 
     </LinearLayout>

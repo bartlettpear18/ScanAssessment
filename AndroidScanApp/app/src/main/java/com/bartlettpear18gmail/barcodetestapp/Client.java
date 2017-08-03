@@ -27,7 +27,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
     //Server variables
     private static Socket socket;
     private static int port = 5000;
-    public static String ip = "10.0.0.162";
+    public static String ip = "192.168.43.81";
 
     //Stream variables
     private ObjectInputStream inputStream = null;

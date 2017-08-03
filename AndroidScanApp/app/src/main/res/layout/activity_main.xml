@@ -38,6 +38,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:onClick="configureActivity"
+        android:text="Configure Scan Engine"
+        android:id="@+id/button6" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:onClick="setIP"
         android:text="Set Host IP "
         android:id="@+id/button5" />

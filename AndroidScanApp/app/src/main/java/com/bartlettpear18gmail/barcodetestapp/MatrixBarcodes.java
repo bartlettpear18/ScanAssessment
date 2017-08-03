@@ -18,8 +18,6 @@ public class MatrixBarcodes extends AppCompatActivity {
 
     private ImageView image;
     private TextView currentSym;
-    private TextView scanStatus;
-
     private Generator gen = null;
     private int i = 0;
     private String tag = "Debug";
@@ -39,7 +37,6 @@ public class MatrixBarcodes extends AppCompatActivity {
 
             image = (ImageView) findViewById(R.id.imageView2);
             currentSym = (TextView) findViewById(R.id.currentSym);
-            scanStatus = (TextView) findViewById(R.id.scanStatus);
 
         } catch (WriterException e) {
             e.printStackTrace();
@@ -49,24 +46,22 @@ public class MatrixBarcodes extends AppCompatActivity {
 
     public void start(View view) throws WriterException, InterruptedException, IOException {
 
-        Log.d(tag, "Starting loop");
         String sym;
-        String status = "Scanning...";
-        scanStatus.setText(status);
 
 
-        if (i < gen.getTwoDMaps().size()-1) {
+        if (i < gen.getTwoDMaps().size()) {
             image.setImageBitmap(gen.getTwoDMaps().get(i));
             Log.d(tag, "Set image");
 
             sym = "Current Symbology: " + gen.getFormats().get(i);
-            currentSym.setText(sym + " " + i+1);
+            currentSym.setText(sym + " " + (i+1));
 
             //Tell main barcode is displayed
+            getClient().sendReady(gen.getCodes().get(i));
             Log.d(tag, "Sending ready");
-
-
             i++;
+        } else {
+            currentSym.setText("Test finished. View results on desktop app");
         }
 
     }}

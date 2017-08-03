@@ -83,6 +83,7 @@ public class DriverServer implements Runnable{
             while(getMed().getDecodes().size() < getMed().getTests()) {
                 if(getMed().getIsReady()) {
                     sendToDriver(ready);
+                    outputStream.flush();
                     getMed().changeIsReady();
 
                     while(!(inputStream.available() > 0 )) {}
@@ -90,7 +91,9 @@ public class DriverServer implements Runnable{
 
                     if(inputStream.available() != 0) {
                         String tmp = receiveFromDriver();
-                        tmp = tmp.substring(1,tmp.length()-1);
+                        if(tmp.substring(0,1).equals(("A"))) {
+                            tmp = tmp.substring(1,tmp.length()-1);
+                        }
                         getMed().addDecodes(tmp);
                         setText2("Scan Complete. Press next");
                     }
