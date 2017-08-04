@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Current SymbologyL Config"
+            android:text="Current Symbology: Config"
             android:gravity="center"
             android:id="@+id/currentSym"
             android:layout_weight="1"/>

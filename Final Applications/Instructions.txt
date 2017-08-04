@@ -1,0 +1,33 @@
+Scan Diagnostic Software Instructions
+
+1. Start the Desktop Application
+2. Wait for the User Window to appear.
+3. Open up the Android Application.
+
+4. Click “Set IP”
+5. Type in the IP address displayed on the Desktop Application’s window into the Android’s text fields and press “Submit”
+6. Return to the Main screen on the Android app
+
+7. If this is your first time using the scan engine, click “Configure Scan Engine”
+8. Press the “Configure Engine” button
+9. Scan the Barcode on the Android screen with the Scan Engine once the Scan engine lights up 
+10. Return to the Main screen on the Android app
+
+11. Choose which test you would like to run: “1D Barcodes”, “2D Barcodes”, or a mix with the “Both 1D and 2D” Option
+12. Follow the instructions on the Desktop Application to complete the tests
+13. Close the Desktop Application and Android application once tests finish
+14. To run tests again, Repeat instructions from step 1 (skipping past steps 7-10)
+
+Help
+
+Issue: Android app crashes when returning to home screen after running tests.
+	Solution: Close and restart Desktop Application and Android application.
+Issue: Desktop won’t recognize Android application when I start my tests
+	Solution: Type in the Host IP address into the “Set IP” activity text fields and try again. If this doesn’t work, close and restart Desktop Application and Android application.
+Issue: Scan Engine won’t recognize the barcodes presented in the test
+	Solution: Reconfigure the scan engine by going to the “Configure Scan Engine” option from the main screen.
+
+
+
+
+
